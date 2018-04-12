@@ -1,8 +1,11 @@
 <template>
   <div class="users">
     <h1>Users</h1>
-    <input type="Text" v-model="newUser.name" placeholder="Add a movie" />
-    <button v-on:click="addItem">ADD</button>
+    <div class="inputWrap">
+      <input type="Text" v-model="newUser.name" placeholder="Movie name" />
+      <!--<button v-on:click="addItem">ADD</button> -->
+      <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
+    </div>
     <ul>
       <li v-for="item in users" v-bind:class="{back: item.marked}">
         <div>
@@ -24,15 +27,18 @@
   </div>
 </template>
 
+
 <script>
 import addImg from './addImg.vue';
 import addVideo from './addVideo.vue';
+import addPoster from './addPoster.vue';
 
 export default {
   name: 'users',
   components: {
     'add-img': addImg,
-    'add-video': addVideo
+    'add-video': addVideo,
+    'add-poster': addPoster
   },
   data(){
     return{
@@ -65,11 +71,12 @@ export default {
     }
   },
   methods: {
-    addItem: function(event){
+    addItem: function(posterUrl){
       this.users.push({
         str: this.newUser.name,
         marked: false,
         edit: false,
+        urlList: posterUrl
       })
       this.newUser.name="";
       console.log(this.users);
@@ -84,8 +91,12 @@ export default {
     saveEdit: function(item){
       item.edit = false;
       console.log(item);
-    }
-  }
+    },
+    addPosterToList: function(posterUrl) {
+			console.log('addPosterToList', posterUrl);
+			item.urlList.push(posterUrl);
+		}
+  }//methods
 }
 </script>
 
@@ -123,5 +134,13 @@ p{
   display: flex;
   justify-content: center;
   padding: 20px 0 20px 0;
+}
+.inputWrap{
+  display: flex;
+  justify-content: center;
+  padding: 10px 10px 10px;
+}
+.inputWrap input{
+  margin: 0 10px 0 0;
 }
 </style>
