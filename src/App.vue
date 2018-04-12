@@ -5,6 +5,8 @@
 </template>
 
 <script>
+
+
 import list from './components/list.vue'
 import users from './components/users.vue'
 
@@ -15,6 +17,7 @@ export default {
     users
   }
 }
+
 </script>
 
 <style>
