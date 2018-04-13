@@ -1,6 +1,6 @@
 <template>
   <div class="users">
-    <h1>Users</h1>
+    <h1>Movies</h1>
     <div class="inputWrap">
       <input type="Text" v-model="newUser.name" placeholder="Movie name" />
       <input type="Text" v-model="newUser.year" placeholder="Release year" />
@@ -8,18 +8,18 @@
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
     <ul>
-      <li v-for="item in users" v-bind:class="{back: item.marked}">
+      <li v-for="item in users" v-bind:class="{back: item.marked}" v-on:click="marked(item)">
         <div class="mediaWrap">
           <add-img v-bind:url="item.urlList" /> <!-- Komponent bild-->
         <!--  <add-video v-bind:video="item.videoList" />  Komponent video -->
         </div>
-        <div>
+        <div id="containerText">
           <div class="textWrap">
-            <label><input type="checkbox" class="toggle" v-model="item.marked"/>
+            <!--<label><input type="checkbox" class="toggle" v-model="item.marked"/>-->
               <span  v-bind:class="{ marked: item.marked}">
                 <p v-if="item.edit == false">{{item.str}}</p>
-                <p v-if="item.edit == false">{{item.strYear}}</p>
                 <input type="text" v-else v-model="item.str">
+                <p v-if="item.edit == false">{{item.strYear}}</p>
                 <input type="text" v-else v-model="item.strYear">
                 <button v-on:click="deleteItem(item)">x</button>
                 <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
@@ -107,7 +107,16 @@ export default {
     addPosterToList: function(posterUrl) {
 			console.log('addPosterToList', posterUrl);
 			item.urlList.push(posterUrl);
-		}
+		},
+    marked: function(item){
+      if(item.marked == false){
+        item.marked = true;
+      }else if(item.marked == true){
+        item.marked = false;
+      }
+
+      console.log(item.marked);
+    }
   }//methods
 }
 </script>
@@ -126,12 +135,13 @@ ul{
 li{
   margin: 15px 0 0 0;
   background-color: #4BC2C5;
-  border: 1px solid black;
+  border-radius: 5px;
+  -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
   display: flex;
 }
-li div {
-  padding: 10px 0 0 0;
-}
+
 p{
   margin: 0;
   padding: 0;
@@ -145,8 +155,10 @@ p{
 }
 .mediaWrap{
   display: flex;
+  align-items: center;
+
   justify-content: center;
-  padding: 20px 0 20px 0;
+  padding: 0;
 }
 .inputWrap{
   display: flex;
@@ -157,6 +169,10 @@ p{
   margin: 0 10px 0 0;
 }
 .textWrap{
-  padding: 30px 0 0 5px;
+  padding: 0px 0 0 5px;
+}
+#containerText{
+  display: flex;
+  align-items: center;
 }
 </style>

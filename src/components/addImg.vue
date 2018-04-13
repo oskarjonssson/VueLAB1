@@ -10,8 +10,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 img{
   width: 50px;
+}
+div{
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 </style>
