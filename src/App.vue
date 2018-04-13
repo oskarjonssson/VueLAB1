@@ -13,7 +13,7 @@ import users from './components/users.vue'
 export default {
   name: 'app',
   components: {
-    list,
+    //list,
     users
   }
 }

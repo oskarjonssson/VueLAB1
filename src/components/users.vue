@@ -3,24 +3,30 @@
     <h1>Users</h1>
     <div class="inputWrap">
       <input type="Text" v-model="newUser.name" placeholder="Movie name" />
+      <input type="Text" v-model="newUser.year" placeholder="Release year" />
       <!--<button v-on:click="addItem">ADD</button> -->
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
     <ul>
       <li v-for="item in users" v-bind:class="{back: item.marked}">
-        <div>
-          <input type="checkbox" class="toggle" v-model="item.marked"/>
-          <span  v-bind:class="{ marked: item.marked}">
-            <p v-if="item.edit == false">{{item.str}}</p>
-            <input type="text" v-else v-model="item.str"></input>
-            <button v-on:click="deleteItem(item)">x</button>
-            <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
-            <button v-else v-on:click="saveEdit(item)">Save</button>
-          </span>
-        </div>
         <div class="mediaWrap">
           <add-img v-bind:url="item.urlList" /> <!-- Komponent bild-->
-          <add-video v-bind:video="item.videoList" /> <!-- Komponent video -->
+        <!--  <add-video v-bind:video="item.videoList" />  Komponent video -->
+        </div>
+        <div>
+          <div class="textWrap">
+            <label><input type="checkbox" class="toggle" v-model="item.marked"/>
+              <span  v-bind:class="{ marked: item.marked}">
+                <p v-if="item.edit == false">{{item.str}}</p>
+                <p v-if="item.edit == false">{{item.strYear}}</p>
+                <input type="text" v-else v-model="item.str">
+                <input type="text" v-else v-model="item.strYear">
+                <button v-on:click="deleteItem(item)">x</button>
+                <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
+                <button v-else v-on:click="saveEdit(item)">Save</button>
+              </span>
+            </label>
+          </div>
         </div>
       </li>
     </ul>
@@ -30,14 +36,14 @@
 
 <script>
 import addImg from './addImg.vue';
-import addVideo from './addVideo.vue';
+//import addVideo from './addVideo.vue';
 import addPoster from './addPoster.vue';
 
 export default {
   name: 'users',
   components: {
     'add-img': addImg,
-    'add-video': addVideo,
+    //'add-video': addVideo,
     'add-poster': addPoster
   },
   data(){
@@ -45,26 +51,29 @@ export default {
       newUser: {},
       users: [
         {
-          str: "Avengers: Age of Ultron (2015)",
+          str: "Avengers: Age of Ultron ",
+          strYear: " (2015)",
           marked: false,
           edit: false,
           urlList: 'https://ia.media-imdb.com/images/M/MV5BMTM4OGJmNWMtOTM4Ni00NTE3LTg3MDItZmQxYjc4N2JhNmUxXkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_UX182_CR0,0,182,268_AL_.jpg',
-          videoList: "https://www.youtube.com/embed/tmeOjFno6Do"
+          //videoList: "https://www.youtube.com/embed/tmeOjFno6Do"
         },
         {
-          str: "Avengers (2012)",
+          str: "Avengers ",
+          strYear: " (2012)",
           marked: false,
           edit: false,
           urlList: 'https://ia.media-imdb.com/images/M/MV5BMTk2NTI1MTU4N15BMl5BanBnXkFtZTcwODg0OTY0Nw@@._V1_UX182_CR0,0,182,268_AL_.jpg',
-          videoList: "https://www.youtube.com/embed/zatgnqdIefs"
+          //videoList: "https://www.youtube.com/embed/zatgnqdIefs"
 
         },
         {
-          str: "Doctor Strange (2016)",
+          str: "Doctor Strange ",
+          strYear:" (2016)",
           marked: false,
           edit: false,
           urlList: 'https://ia.media-imdb.com/images/M/MV5BNjgwNzAzNjk1Nl5BMl5BanBnXkFtZTgwMzQ2NjI1OTE@._V1_UX182_CR0,0,182,268_AL_.jpg',
-          videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
 
         }
       ]
@@ -74,11 +83,14 @@ export default {
     addItem: function(posterUrl){
       this.users.push({
         str: this.newUser.name,
+        strYear: " ("+ this.newUser.year +")",
         marked: false,
         edit: false,
         urlList: posterUrl
       })
       this.newUser.name="";
+      this.newUser.year="";
+      console.log("this.newUser.year", this.newUser.year)
       console.log(this.users);
     },
     deleteItem: function(item){
@@ -115,6 +127,7 @@ li{
   margin: 15px 0 0 0;
   background-color: #4BC2C5;
   border: 1px solid black;
+  display: flex;
 }
 li div {
   padding: 10px 0 0 0;
@@ -142,5 +155,8 @@ p{
 }
 .inputWrap input{
   margin: 0 10px 0 0;
+}
+.textWrap{
+  padding: 30px 0 0 5px;
 }
 </style>
