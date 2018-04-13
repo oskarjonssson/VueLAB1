@@ -18,9 +18,9 @@
             <!--<label><input type="checkbox" class="toggle" v-model="item.marked"/>-->
               <span  v-bind:class="{ marked: item.marked}">
                 <p v-if="item.edit == false">{{item.str}}</p>
-                <input type="text" v-else v-model="item.str">
+                <input type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
-                <input type="text" v-else v-model="item.strYear">
+                <input type="text" v-else v-model="item.strYear"><br>
                 <button v-on:click="deleteItem(item)">x</button>
                 <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
                 <button v-else v-on:click="saveEdit(item)">Save</button>
@@ -123,23 +123,38 @@ export default {
 
 
 <style scoped>
+h1{
+  color: white;
+  margin: 20px 0 50px 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
 .users{
   text-align: center;
 }
 ul{
+  background-color: gren;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin: 0 auto;
   padding: 0;
   width: 700px;
   list-style: none;
 }
 li{
+  font-family: 'Montserrat', sans-serif;
+  color: white;
   margin: 15px 0 0 0;
-  background-color: #4BC2C5;
+  width: 200px;
+  flex-wrap: wrap;
+  background-color: transparent;
   border-radius: 5px;
   -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
   -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
   box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
   display: flex;
+  justify-content: center;
 }
 
 p{
@@ -161,12 +176,22 @@ p{
   padding: 0;
 }
 .inputWrap{
+  width: 700px;
   display: flex;
-  justify-content: center;
+
+  justify-content: space-between;
   padding: 10px 10px 10px;
 }
 .inputWrap input{
+  font-family: 'Montserrat', sans-serif;
   margin: 0 10px 0 0;
+  width: 170px;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  padding: 0 0 0 10px;
+  height: 25px;
+
 }
 .textWrap{
   padding: 0px 0 0 5px;
