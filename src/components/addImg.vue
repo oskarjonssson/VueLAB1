@@ -12,7 +12,7 @@ export default {
 
 <style scoped>
 img{
-  width: 50px;
+  width: 200px;
 }
 div{
   padding: 0;
