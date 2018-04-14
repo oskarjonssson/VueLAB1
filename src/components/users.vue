@@ -8,22 +8,24 @@
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
     <ul>
-      <li v-for="item in users" v-bind:class="{back: item.marked}" v-on:click="marked(item)">
-        <div class="mediaWrap">
+      <li v-for="item in users">
+        <button class="deletePlacement" v-if="item.marked == true" v-on:click="deleteItem(item)"><i id="iconDelete" class="fas fa-times"></i></button>
+        <button class="editPlacement" v-if="item.marked == true && item.edit == false" v-on:click="editItem(item)"><!--<i class="fas fa-pencil-alt"></i>-->E</button>
+        <button class="editPlacement" v-else-if="item.marked == true && item.edit == true" v-on:click="saveEdit(item)">S<!--<i class="fas fa-save"></i>--></button>
+
+        <div class="mediaWrap"  v-on:click="marked(item)">
           <add-img v-bind:url="item.urlList" /> <!-- Komponent bild-->
         <!--  <add-video v-bind:video="item.videoList" />  Komponent video -->
         </div>
-        <div id="containerText">
+        <div id="containerText" v-bind:class="{back: item.marked}">
           <div class="textWrap">
             <!--<label><input type="checkbox" class="toggle" v-model="item.marked"/>-->
-              <span  v-bind:class="{ marked: item.marked}">
+              <span>
                 <p v-if="item.edit == false">{{item.str}}</p>
-                <input type="text" v-else v-model="item.str"><br>
+                <input class="inputEdit" type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
-                <input type="text" v-else v-model="item.strYear"><br>
-                <button v-on:click="deleteItem(item)">x</button>
-                <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
-                <button v-else v-on:click="saveEdit(item)">Save</button>
+                <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
+
               </span>
             </label>
           </div>
@@ -111,7 +113,10 @@ export default {
     marked: function(item){
       if(item.marked == false){
         item.marked = true;
-      }else if(item.marked == true){
+      }else if(item.marked == true && item.edit == true){
+        item.marked == true;
+      }
+      else if(item.marked == true){
         item.marked = false;
       }
 
@@ -123,11 +128,57 @@ export default {
 
 
 <style scoped>
+span{
+  width: 100%;
+
+
+}
 h1{
   color: white;
   margin: 20px 0 50px 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
+}
+.inputEdit{
+  margin: 2px 0 0 0;
+  background-color: #de8a344f;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  border: 1px solid white;
+  border-radius: 20px;
+  outline: none;
+  text-align: center;
+  font-size: 15px;
+}
+.editPlacement{
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: #0be36a;
+  color: white;
+  -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+}
+.deletePlacement{
+  text-align: center;
+  padding: 0;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: crimson;
+  color: white;
+  -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
 }
 .users{
   text-align: center;
@@ -143,6 +194,7 @@ ul{
   list-style: none;
 }
 li{
+  position: relative;
   font-family: 'Montserrat', sans-serif;
   color: white;
   margin: 15px 0 0 0;
@@ -158,15 +210,16 @@ li{
 }
 
 p{
-  margin: 0;
+  margin: 5px 0 0 0;
   padding: 0;
   display: inline;
+  font-size: 15px;
 }
 .marked{
   text-decoration: line-through;
 }
 .back{
-  background-color: #78FEE0;
+  background:linear-gradient(135deg, #fcdf8a 0%,#f38381 100%);
 }
 .mediaWrap{
   display: flex;
@@ -194,10 +247,32 @@ p{
 
 }
 .textWrap{
-  padding: 0px 0 0 5px;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 #containerText{
   display: flex;
+  justify-content: centeR;
+  border-radius: 5px;
   align-items: center;
+  height: 70px;
+  width: 100%;
+}
+.saveBtn{
+  border: none;
+  width: 150px;
+  border-radius: 20px;
+  height: 25px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #0be36a;
+  color: white;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  padding: 0;
+  margin: 0;
 }
 </style>
