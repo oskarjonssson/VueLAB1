@@ -3,7 +3,8 @@
     <h1>Movies</h1>
     <div class="inputWrap">
       <input type="Text" v-model="newUser.name" placeholder="Movie name" />
-      <input type="Text" v-model="newUser.year" placeholder="Release year" />
+      <input type="text" v-model="newUser.year" placeholder="Release year" />
+      <message  errorMessage="Hur får man ett meddelande hit?" ></message>
       <!--<button v-on:click="addItem">ADD</button> -->
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
@@ -24,10 +25,19 @@
                 <p v-if="item.edit == false">{{item.str}}</p>
                 <input class="inputEdit" type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
+<<<<<<< HEAD
                 <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
 
+=======
+                <input type="text" v-else v-model="item.strYear"><br>
+                <div class="btnWrap">
+                  <button v-on:click="deleteItem(item)">x</button>
+                  <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
+                  <button v-else v-on:click="saveEdit(item)">Save</button>
+                </div>
+>>>>>>> c67e19814c1a9ec47edd0b79c36f8ea9e64bd2a1
               </span>
-            </label>
+            <!--</label> -->
           </div>
         </div>
       </li>
@@ -40,13 +50,16 @@
 import addImg from './addImg.vue';
 //import addVideo from './addVideo.vue';
 import addPoster from './addPoster.vue';
+import message from './message.vue';
 
 export default {
   name: 'users',
+  newMessage: 'hej',
   components: {
     'add-img': addImg,
     //'add-video': addVideo,
-    'add-poster': addPoster
+    'add-poster': addPoster,
+    'message': message
   },
   data(){
     return{
@@ -67,7 +80,6 @@ export default {
           edit: false,
           urlList: 'https://ia.media-imdb.com/images/M/MV5BMTk2NTI1MTU4N15BMl5BanBnXkFtZTcwODg0OTY0Nw@@._V1_UX182_CR0,0,182,268_AL_.jpg',
           //videoList: "https://www.youtube.com/embed/zatgnqdIefs"
-
         },
         {
           str: "Doctor Strange ",
@@ -76,24 +88,76 @@ export default {
           edit: false,
           urlList: 'https://ia.media-imdb.com/images/M/MV5BNjgwNzAzNjk1Nl5BMl5BanBnXkFtZTgwMzQ2NjI1OTE@._V1_UX182_CR0,0,182,268_AL_.jpg',
           //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
-
+        },
+        {
+          str: "Incredibles 2 ",
+          strYear:" (2018)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BMTEzNzY0OTg0NTdeQTJeQWpwZ15BbWU4MDU3OTg3MjUz._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+        },
+        {
+          str: "Spider-Man: Homecoming ",
+          strYear:" (2017)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BNTk4ODQ1MzgzNl5BMl5BanBnXkFtZTgwMTMyMzM4MTI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+        },
+        {
+          str: "Fight Club  ",
+          strYear:" (1999)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BMzFjMWNhYzQtYTIxNC00ZWQ1LThiOTItNWQyZmMxNDYyMjA5XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+        },
+        {
+          str: "The Matrix ",
+          strYear:" (1999)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+        },
+        {
+          str: "Pulp Fiction ",
+          strYear:" (1994)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BMTkxMTA5OTAzMl5BMl5BanBnXkFtZTgwNjA5MDc3NjE@._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
+        },
+        {
+          str: "Doctor Strange ",
+          strYear:" (2016)",
+          marked: false,
+          edit: false,
+          urlList: 'https://ia.media-imdb.com/images/M/MV5BNjgwNzAzNjk1Nl5BMl5BanBnXkFtZTgwMzQ2NjI1OTE@._V1_UX182_CR0,0,182,268_AL_.jpg',
+          //videoList: "https://www.youtube.com/embed/HSzx-zryEgM"
         }
       ]
     }
   },
   methods: {
     addItem: function(posterUrl){
-      this.users.push({
-        str: this.newUser.name,
-        strYear: " ("+ this.newUser.year +")",
-        marked: false,
-        edit: false,
-        urlList: posterUrl
-      })
-      this.newUser.name="";
-      this.newUser.year="";
-      console.log("this.newUser.year", this.newUser.year)
-      console.log(this.users);
+      if(isNaN(this.newUser.year) || this.newUser.year == ''){
+        console.log("detta var inget nummer")
+        this.iMessage(name);
+      }else{
+        this.users.push({
+          str: this.newUser.name,
+          strYear: " ("+ this.newUser.year +")",
+          marked: false,
+          edit: false,
+          urlList: posterUrl
+        })
+        this.newUser.name='';
+        this.newUser.year='';
+        console.log("this.newUser.year", this.strYear)
+        console.log(this.users);
+      }
     },
     deleteItem: function(item){
       this.users.splice(this.users.indexOf(item), 1)
@@ -119,8 +183,11 @@ export default {
       else if(item.marked == true){
         item.marked = false;
       }
-
       console.log(item.marked);
+    },
+    iMessage: function(message){
+      this.newMessage = message;
+      console.log("detta fungerar??")
     }
   }//methods
 }
@@ -133,6 +200,19 @@ span{
 
 
 }
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
 h1{
   color: white;
   margin: 20px 0 50px 0;
@@ -213,7 +293,13 @@ p{
   margin: 5px 0 0 0;
   padding: 0;
   display: inline;
+<<<<<<< HEAD
   font-size: 15px;
+=======
+  font-family: arial;
+  font-size: 18px;
+  color: #3b3b3b;
+>>>>>>> c67e19814c1a9ec47edd0b79c36f8ea9e64bd2a1
 }
 .marked{
   text-decoration: line-through;
@@ -274,5 +360,8 @@ p{
   letter-spacing: 0.5px;
   padding: 0;
   margin: 0;
+}
+.btnWrap{
+  display: flex;
 }
 </style>
