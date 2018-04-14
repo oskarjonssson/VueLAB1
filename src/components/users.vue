@@ -4,7 +4,7 @@
     <div class="inputWrap">
       <input type="Text" v-model="newUser.name" placeholder="Movie name" />
       <input type="text" v-model="newUser.year" placeholder="Release year" />
-      <message  errorMessage="Hur får man ett meddelande hit?" ></message>
+      <message  class="errorDisplay"v-if="this.error == true" v-bind:errorMessage="this.newMessage" ></message>
       <!--<button v-on:click="addItem">ADD</button> -->
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
@@ -25,17 +25,8 @@
                 <p v-if="item.edit == false">{{item.str}}</p>
                 <input class="inputEdit" type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
-<<<<<<< HEAD
                 <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
-
-=======
-                <input type="text" v-else v-model="item.strYear"><br>
-                <div class="btnWrap">
-                  <button v-on:click="deleteItem(item)">x</button>
-                  <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
-                  <button v-else v-on:click="saveEdit(item)">Save</button>
-                </div>
->>>>>>> c67e19814c1a9ec47edd0b79c36f8ea9e64bd2a1
+                <!--<input type="text" v-else v-model="item.strYear"><br>-->
               </span>
             <!--</label> -->
           </div>
@@ -54,7 +45,6 @@ import message from './message.vue';
 
 export default {
   name: 'users',
-  newMessage: 'hej',
   components: {
     'add-img': addImg,
     //'add-video': addVideo,
@@ -64,6 +54,8 @@ export default {
   data(){
     return{
       newUser: {},
+      newMessage: '',
+      error: false,
       users: [
         {
           str: "Avengers: Age of Ultron ",
@@ -144,7 +136,9 @@ export default {
     addItem: function(posterUrl){
       if(isNaN(this.newUser.year) || this.newUser.year == ''){
         console.log("detta var inget nummer")
-        this.iMessage(name);
+        this.error = true;
+        this.newMessage ="Detta var inget nummer";
+        this.errorTimer();
       }else{
         this.users.push({
           str: this.newUser.name,
@@ -185,9 +179,12 @@ export default {
       }
       console.log(item.marked);
     },
-    iMessage: function(message){
-      this.newMessage = message;
-      console.log("detta fungerar??")
+    errorTimer: function(){
+      window.setTimeout(this.errorFun, 5000);
+    },
+    errorFun: function(){
+      this.error = false;
+      this.newMessage = '';
     }
   }//methods
 }
@@ -195,23 +192,18 @@ export default {
 
 
 <style scoped>
-span{
-  width: 100%;
 
 
-}
 /* For Firefox */
 input[type='number'] {
     -moz-appearance:textfield;
 }
-
 /* Webkit browsers like Safari and Chrome */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
 
 h1{
   color: white;
@@ -221,6 +213,7 @@ h1{
 }
 .inputEdit{
   margin: 2px 0 0 0;
+
   background-color: #de8a344f;
   color: white;
   font-family: 'Montserrat', sans-serif;
@@ -230,6 +223,7 @@ h1{
   text-align: center;
   font-size: 15px;
 }
+
 .editPlacement{
   position: absolute;
   top: -5px;
@@ -262,8 +256,10 @@ h1{
 }
 .users{
   text-align: center;
+
 }
 ul{
+
   background-color: gren;
   display: flex;
   flex-wrap: wrap;
@@ -271,6 +267,7 @@ ul{
   margin: 0 auto;
   padding: 0;
   width: 700px;
+  height: 800px;
   list-style: none;
 }
 li{
@@ -293,13 +290,8 @@ p{
   margin: 5px 0 0 0;
   padding: 0;
   display: inline;
-<<<<<<< HEAD
   font-size: 15px;
-=======
-  font-family: arial;
-  font-size: 18px;
-  color: #3b3b3b;
->>>>>>> c67e19814c1a9ec47edd0b79c36f8ea9e64bd2a1
+  font-family: 'Montserrat', sans-serif;
 }
 .marked{
   text-decoration: line-through;
@@ -333,7 +325,6 @@ p{
 
 }
 .textWrap{
-
   width: 100%;
   display: flex;
   justify-content: center;
@@ -348,20 +339,6 @@ p{
   height: 70px;
   width: 100%;
 }
-.saveBtn{
-  border: none;
-  width: 150px;
-  border-radius: 20px;
-  height: 25px;
-  font-family: 'Montserrat', sans-serif;
-  background-color: #0be36a;
-  color: white;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-  padding: 0;
-  margin: 0;
-}
-.btnWrap{
-  display: flex;
-}
+
+
 </style>
