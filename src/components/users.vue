@@ -4,24 +4,29 @@
     <div class="inputWrap">
       <input type="Text" v-model="newUser.name" placeholder="Movie name" />
       <input type="text" v-model="newUser.year" placeholder="Release year" />
-      <message  errorMessage="Hur får man ett meddelande hit?" ></message>
+      <message  class="errorDisplay" v-if="this.error == true" v-bind:errorMessage="this.newMessage" ></message>
       <!--<button v-on:click="addItem">ADD</button> -->
       <add-poster v-on:adding-poster="addItem" /> <!-- Komponent som lägger till text och bild -->
     </div>
     <ul>
-      <li v-for="item in users" v-bind:class="{back: item.marked}" v-on:click="marked(item)">
-        <div class="mediaWrap">
+      <li v-for="item in users">
+        <button class="deletePlacement" v-if="item.marked == true" v-on:click="deleteItem(item)"><i id="iconDelete" class="fas fa-times"></i></button>
+        <button class="editPlacement" v-if="item.marked == true && item.edit == false" v-on:click="editItem(item)"><!--<i class="fas fa-pencil-alt"></i>-->E</button>
+        <button class="editPlacement" v-else-if="item.marked == true && item.edit == true" v-on:click="saveEdit(item)">S<!--<i class="fas fa-save"></i>--></button>
+
+        <div class="mediaWrap"  v-on:click="marked(item)">
           <add-img v-bind:url="item.urlList" /> <!-- Komponent bild-->
         <!--  <add-video v-bind:video="item.videoList" />  Komponent video -->
         </div>
-        <div id="containerText">
+        <div id="containerText" v-bind:class="{back: item.marked}">
           <div class="textWrap">
             <!--<label><input type="checkbox" class="toggle" v-model="item.marked"/>-->
-              <span  v-bind:class="{ marked: item.marked}">
+              <span>
                 <p v-if="item.edit == false">{{item.str}}</p>
-                <input type="text" v-else v-model="item.str"><br>
+                <input class="inputEdit" type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
-                <input type="text" v-else v-model="item.strYear">
+                <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
+                <!--<input type="text" v-else v-model="item.strYear"><br>-->
               </span>
               <div class="btnWrap">
                 <button class="btnDelete" v-on:click="deleteItem(item)">x</button>
@@ -45,7 +50,6 @@ import message from './message.vue';
 
 export default {
   name: 'users',
-  newMessage: 'hej',
   components: {
     'add-img': addImg,
     //'add-video': addVideo,
@@ -55,6 +59,8 @@ export default {
   data(){
     return{
       newUser: {},
+      newMessage: '',
+      error: false,
       users: [
         {
           str: "Avengers: Age of Ultron ",
@@ -135,7 +141,14 @@ export default {
     addItem: function(posterUrl){
       if(isNaN(this.newUser.year) || this.newUser.year == ''){
         console.log("detta var inget nummer")
-        this.iMessage(name);
+        this.error = true;
+        this.newMessage ="Detta var inget nummer";
+        this.errorTimer();
+      }else if(!this.newUser.name){
+        this.error = true;
+        this.newMessage ="För kort namn..";
+        this.errorTimer();
+        console.log("för kort namn!")
       }else{
         this.users.push({
           str: this.newUser.name,
@@ -146,8 +159,8 @@ export default {
         })
         this.newUser.name='';
         this.newUser.year='';
-        console.log("this.newUser.year", this.strYear)
-        console.log(this.users);
+        console.log("this.newUser.year", this.newUser.year)
+        console.log(this.users.name);
       }
     },
     deleteItem: function(item){
@@ -168,14 +181,20 @@ export default {
     marked: function(item){
       if(item.marked == false){
         item.marked = true;
-      }else if(item.marked == true){
+      }else if(item.marked == true && item.edit == true){
+        item.marked == true;
+      }
+      else if(item.marked == true){
         item.marked = false;
       }
       console.log(item.marked);
     },
-    iMessage: function(message){
-      this.newMessage = message;
-      console.log("detta fungerar??")
+    errorTimer: function(){
+      window.setTimeout(this.errorFun, 5000);
+    },
+    errorFun: function(){
+      this.error = false;
+      this.newMessage = '';
     }
   }//methods
 }
@@ -183,11 +202,12 @@ export default {
 
 
 <style scoped>
+
+
 /* For Firefox */
 input[type='number'] {
     -moz-appearance:textfield;
 }
-
 /* Webkit browsers like Safari and Chrome */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -201,10 +221,55 @@ h1{
   padding: 0;
   font-family: 'Montserrat', sans-serif;
 }
+.inputEdit{
+  margin: 2px 0 0 0;
+
+  background-color: #de8a344f;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  border: 1px solid white;
+  border-radius: 20px;
+  outline: none;
+  text-align: center;
+  font-size: 15px;
+}
+
+.editPlacement{
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: #0be36a;
+  color: white;
+  -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+}
+.deletePlacement{
+  text-align: center;
+  padding: 0;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: crimson;
+  color: white;
+  -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+  box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.2);
+}
 .users{
   text-align: center;
+
 }
 ul{
+
   background-color: gren;
   display: flex;
   flex-wrap: wrap;
@@ -212,9 +277,11 @@ ul{
   margin: 0 auto;
   padding: 0;
   width: 700px;
+  height: 800px;
   list-style: none;
 }
 li{
+  position: relative;
   font-family: 'Montserrat', sans-serif;
   color: white;
   margin: 15px 0 0 0;
@@ -230,18 +297,17 @@ li{
 }
 
 p{
-  margin: 0;
+  margin: 5px 0 0 0;
   padding: 0;
   display: inline;
-  font-family: arial;
-  font-size: 18px;
-  color: #3b3b3b;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
 }
 .marked{
   text-decoration: line-through;
 }
 .back{
-  background-color: #78FEE0;
+  background:linear-gradient(135deg, #fcdf8a 0%,#f38381 100%);
 }
 .mediaWrap{
   display: flex;
@@ -269,55 +335,19 @@ p{
 
 }
 .textWrap{
-
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 #containerText{
   display: flex;
+  justify-content: centeR;
+  border-radius: 5px;
   align-items: center;
-}
-.btnWrap{
-  display: flex;
-}
-.btnDelete {
-  border: none;
-  height: 25px;
-  border-radius: 20px;
-  width: 50px;
-  color: white;
-  background-color: #f64545;
-  font-family: 'Montserrat', sans-serif;
-  margin: 10px;
-  font-size: 1em;
-  font-weight: bold;
-}
-.btnDelete:hover {
-  cursor: pointer;
-  background: #dd3b3b;;
-}
-
-.btnEdit, .btnSave {
-  border: none;
-  height: 25px;
-  border-radius: 20px;
-  width: 100px;
-  color: white;
-  background-color: #adadad;
-  font-family: 'Montserrat', sans-serif;
-  margin: 10px;
-}
-.btnEdit:hover{
-  cursor: pointer;
-  background: #999;
-}
-
-span > input{
-  font-family: 'Montserrat', sans-serif;
-  border-radius: 20px;
-  outline: none;
-  border: none;
-  padding: 0 0 0 10px;
-  height: 18px;
-  width: 160px;
+  height: 70px;
+  width: 100%;
 }
 
 
