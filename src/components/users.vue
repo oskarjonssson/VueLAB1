@@ -21,13 +21,13 @@
                 <p v-if="item.edit == false">{{item.str}}</p>
                 <input type="text" v-else v-model="item.str"><br>
                 <p v-if="item.edit == false">{{item.strYear}}</p>
-                <input type="text" v-else v-model="item.strYear"><br>
-                <div class="btnWrap">
-                  <button v-on:click="deleteItem(item)">x</button>
-                  <button  v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
-                  <button v-else v-on:click="saveEdit(item)">Save</button>
-                </div>
+                <input type="text" v-else v-model="item.strYear">
               </span>
+              <div class="btnWrap">
+                <button class="btnDelete" v-on:click="deleteItem(item)">x</button>
+                <button class="btnEdit" v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
+                <button class="btnSave" v-else v-on:click="saveEdit(item)">Save</button>
+              </div>
             <!--</label> -->
           </div>
         </div>
@@ -269,7 +269,7 @@ p{
 
 }
 .textWrap{
-  padding: 0px 0 0 5px;
+
 }
 #containerText{
   display: flex;
@@ -278,4 +278,47 @@ p{
 .btnWrap{
   display: flex;
 }
+.btnDelete {
+  border: none;
+  height: 25px;
+  border-radius: 20px;
+  width: 50px;
+  color: white;
+  background-color: #f64545;
+  font-family: 'Montserrat', sans-serif;
+  margin: 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+.btnDelete:hover {
+  cursor: pointer;
+  background: #dd3b3b;;
+}
+
+.btnEdit, .btnSave {
+  border: none;
+  height: 25px;
+  border-radius: 20px;
+  width: 100px;
+  color: white;
+  background-color: #adadad;
+  font-family: 'Montserrat', sans-serif;
+  margin: 10px;
+}
+.btnEdit:hover{
+  cursor: pointer;
+  background: #999;
+}
+
+span > input{
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  padding: 0 0 0 10px;
+  height: 18px;
+  width: 160px;
+}
+
+
 </style>
