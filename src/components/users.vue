@@ -277,7 +277,6 @@ ul{
   margin: 0 auto;
   padding: 0;
   width: 700px;
-  height: 800px;
   list-style: none;
 }
 li{
