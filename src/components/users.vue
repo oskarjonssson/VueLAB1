@@ -28,11 +28,7 @@
                 <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
                 <!--<input type="text" v-else v-model="item.strYear"><br>-->
               </span>
-              <div class="btnWrap">
-                <button class="btnDelete" v-on:click="deleteItem(item)">x</button>
-                <button class="btnEdit" v-if="item.edit == false" v-on:click="editItem(item)">Edit</button>
-                <button class="btnSave" v-else v-on:click="saveEdit(item)">Save</button>
-              </div>
+          
             <!--</label> -->
           </div>
         </div>
