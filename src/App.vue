@@ -24,7 +24,7 @@ export default {
 
   display: flex;
   justify-content: center;
-  height: 100vh;
+  /*height: 100vh; */
   margin: 0;
   padding: 0;
   background:linear-gradient(135deg, #7367F0 0%,#CE9FFC 100%);
