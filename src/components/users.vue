@@ -28,7 +28,6 @@
                 <input class="inputEdit" type="text" v-else v-model="item.strYear"><br>
                 <!--<input type="text" v-else v-model="item.strYear"><br>-->
               </span>
-          
             <!--</label> -->
           </div>
         </div>
@@ -146,17 +145,29 @@ export default {
         this.errorTimer();
         console.log("för kort namn!")
       }else{
-        this.users.push({
-          str: this.newUser.name,
-          strYear: " ("+ this.newUser.year +")",
-          marked: false,
-          edit: false,
-          urlList: posterUrl
-        })
-        this.newUser.name='';
-        this.newUser.year='';
-        console.log("this.newUser.year", this.newUser.year)
-        console.log(this.users.name);
+        if(posterUrl.length > 5){
+          this.users.push({
+            str: this.newUser.name,
+            strYear: " ("+ this.newUser.year +")",
+            marked: false,
+            edit: false,
+            urlList: posterUrl
+          })
+          this.newUser.name='';
+          this.newUser.year='';
+          
+        }else{
+          this.users.push({
+            str: this.newUser.name,
+            strYear: " ("+ this.newUser.year +")",
+            marked: false,
+            edit: false,
+            urlList: 'https://image.ibb.co/gqZshS/urlmissing.jpg'
+          })
+          this.newUser.name='';
+          this.newUser.year='';
+
+        }
       }
     },
     deleteItem: function(item){
@@ -262,6 +273,7 @@ h1{
 }
 .users{
   text-align: center;
+  margin: 0 0 100px 0;
 
 }
 ul{
